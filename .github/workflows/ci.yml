@@ -55,15 +55,6 @@ jobs:
           secret-name: registry-connection
           namespace: ${{ env.NAMESPACE }}
 
-      # Create imagepullsecret for Azure Container registry (ACR)
-      - name: Add Application Secrets
-        uses: azure/k8s-create-secret@v1
-        with:
-          secret-type: 'generic'
-          arguments:  --from-literal=base-url=${{ secrets.BASE_URL }}
-          secret-name: wrkcodes-frontend-secret
-          namespace: ${{ env.NAMESPACE }}
-
       # Deploy app to AKS
       - name: Deploy App to Cluster
         uses: azure/k8s-deploy@v1

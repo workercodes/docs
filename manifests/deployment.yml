@@ -21,10 +21,4 @@ spec:
           name: wrkcodes-docs
           ports:
             - containerPort: 8080
-          env:
-            - name: BASE_URL
-              valueFrom:
-                secretKeyRef:
-                  name: wrkcodes-docs-secret
-                  key: base-url
           resources: {}
