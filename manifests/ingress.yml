@@ -15,7 +15,10 @@ spec:
   - host: docs.worker.codes
     http:
       paths:
-      - path: /
+      - pathType: Prefix
+        path: "/"
         backend:
-          serviceName: wrkcodes-docs-service
-          servicePort: 80
+          service:
+            name: wrkcodes-docs-service
+            port:
+              number: 80
