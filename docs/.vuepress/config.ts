@@ -148,4 +148,7 @@ export default defineUserConfig<DefaultThemeOptions>({
         : false,
     ],
   ],
+  dest: `./dist`,
+  temp: `./.temp`,
+  cache: `./.cache`,
 })

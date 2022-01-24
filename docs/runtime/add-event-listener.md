@@ -11,7 +11,7 @@ The `addEventListener` function defines triggers for a Worker script to execute.
 
 ## Syntax
 
-- <Code>addEventListener(type, listener)</Code> <Type>void</Type>
+- `addEventListener(type, listener)`<Type>void</Type>
 
   - If multiple `"fetch"` listeners are registered, when one does not call [`event.respondWith()`](/runtime/fetch-event#methods), the runtime delivers the event to the next registered listener.
 

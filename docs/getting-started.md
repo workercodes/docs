@@ -16,7 +16,7 @@ This guide will instruct you through setting up a Worker Codes account to deploy
 
 Before you can start [publishing](/worker-cli/commands#publish) your application you must sign up for a Worker Codes account.
 
-<p><Button type="primary" href="https://console.worker.codes/auth/signup">Sign up</Button></p>
+<!-- <p><Button type="primary" href="https://console.worker.codes/auth/signup">Sign up</Button></p> -->
 
 --------------------------------
 

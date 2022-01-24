@@ -8,14 +8,15 @@
     "docs:build": "vuepress build docs"
   },
   "devDependencies": {
+    
+  },
+  "dependencies": {
+    "@vue/component-compiler-utils": "^3.3.0",
+    "lru-cache": "^6.0.0",
     "@vuepress/plugin-debug": "^2.0.0-alpha.6",
     "@vuepress/plugin-docsearch": "^2.0.0-alpha.1",
     "@vuepress/plugin-register-components": "^2.0.0-beta.33",
     "@vuepress/plugin-shiki": "^2.0.0-beta.5",
     "vuepress": "^2.0.0-beta.32"
-  },
-  "dependencies": {
-    "@vue/component-compiler-utils": "^3.3.0",
-    "lru-cache": "^6.0.0"
   }
 }

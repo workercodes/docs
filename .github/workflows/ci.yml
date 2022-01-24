@@ -1,0 +1,80 @@
+name: Push to Master Workflow
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  NAMESPACE: workercodes-console
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      # Connect to Azure Container registry (ACR)
+      - name: Login to GitHub Package Registry
+        uses: docker/login-action@v1
+        with:
+          registry: https://docker.pkg.github.com
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      # Container build and push to a Azure Container registry (ACR)
+      - run: |
+          docker build . -t docker.pkg.github.com/workercodes/dashboard/workercodes-docs:lastest
+          docker push docker.pkg.github.com/workercodes/dashboard/workercodes-docs:lastest
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      # Set the target Azure Kubernetes Service (AKS) cluster.
+      - name: Set up Digital Ocean kubectl
+        uses: matootie/dokube@v1.3.4
+        with:
+          personalAccessToken: ${{ secrets.DIGITALOCEAN_TOKEN }}
+          clusterName: k8s-1-19-3-do-3-nyc1-1610420375504
+          expirationTime: "1200"
+
+      # Create namespace if doesn't exist
+      - run: |
+          kubectl create namespace ${{ env.NAMESPACE }} --dry-run -o json | kubectl apply -f -
+
+      # Create imagepullsecret for Azure Container registry (ACR)
+      - name: Create imagepullsecret for GitHub Container registry
+        uses: azure/k8s-create-secret@v1
+        with:
+          container-registry-url: https://docker.pkg.github.com
+          container-registry-username: ${{ github.repository_owner }}
+          container-registry-password: ${{ secrets.GHCR_TOKEN }}
+          secret-name: registry-connection
+          namespace: ${{ env.NAMESPACE }}
+
+      # Create imagepullsecret for Azure Container registry (ACR)
+      - name: Add Application Secrets
+        uses: azure/k8s-create-secret@v1
+        with:
+          secret-type: 'generic'
+          arguments:  --from-literal=base-url=${{ secrets.BASE_URL }}
+          secret-name: wrkcodes-frontend-secret
+          namespace: ${{ env.NAMESPACE }}
+
+      # Deploy app to AKS
+      - name: Deploy App to Cluster
+        uses: azure/k8s-deploy@v1
+        with:
+          manifests: |
+            manifests/deployment.yml
+            manifests/service.yml
+            manifests/certissuer.yml
+            manifests/ingress.yml
+          images: |
+            docker.pkg.github.com/workercodes/dashboard/workercodes-docs:lastest
+          imagepullsecrets: |
+            registry-connection
+          namespace: ${{ env.NAMESPACE }}

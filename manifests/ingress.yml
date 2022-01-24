@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: docs-worker-codes
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: kong
+spec:
+  tls:
+  - secretName: docs-worker-codes
+    hosts:
+    - docs.worker.codes
+  rules:
+  - host: docs.worker.codes
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: wrkcodes-docs-service
+          servicePort: 80

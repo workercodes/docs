@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: wrkcodes-docs
+  name: wrkcodes-docs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wrkcodes-docs
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: wrkcodes-docs
+    spec:
+      containers:
+        - image: "docker.pkg.github.com/workercodes/dashboard/workercodes-docs:lastest"
+          name: wrkcodes-docs
+          ports:
+            - containerPort: 8080
+          env:
+            - name: BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: wrkcodes-docs-secret
+                  key: base-url
+          resources: {}

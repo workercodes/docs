@@ -38,8 +38,6 @@ let request = new Request(input [, init])
 
 ### Parameters
 
-<Definitions>
-
 - `input` <Type>string | Request</Type>
 
   - Either a string that contains a URL, or an existing `Request` object.
@@ -48,11 +46,7 @@ let request = new Request(input [, init])
 
   - Optional options object that contains settings to apply to the `Request`.
 
-</Definitions>
-
 #### `RequestInit`
-
-<Definitions>
 
 - `method` <Type>string</Type> <PropMeta>optional</PropMeta>
 
@@ -70,14 +64,10 @@ let request = new Request(input [, init])
 
   - The redirect mode to use: `follow`, `error`, or `manual`. The default  for a new `Request` object is `follow`. Note, however, that the incoming `Request` property of a `FetchEvent` will have redirect mode `manual`.
 
-</Definitions>
-
 
 ## Properties
 
 All properties of an incoming `Request` object (i.e. `event.request`) are read only. To modify a request, you must create a new `Request` object and pass the options to modify to its [constructor](#constructor).
-
-<Definitions>
 
 - `body` <Type>ReadableStream</Type> <PropMeta>read-only</PropMeta>
 
@@ -103,8 +93,6 @@ All properties of an incoming `Request` object (i.e. `event.request`) are read o
 
   - Contains the URL of the request.
 
-</Definitions>
-
 
 ## Methods
 
@@ -112,7 +100,6 @@ All properties of an incoming `Request` object (i.e. `event.request`) are read o
 
 These methods are only available on an instance of a `Request` object or through its prototype.
 
-<Definitions>
 
 - `clone()` <Type>Promise&lt;Request></Type>
 
@@ -137,7 +124,5 @@ These methods are only available on an instance of a `Request` object or through
 - `blob()` <Type>Promise&lt;Blob></Type>
 
   - Returns a promise that resolves with a Blob representation of the request body.
-
-</Definitions>
 
 --------------------------------
