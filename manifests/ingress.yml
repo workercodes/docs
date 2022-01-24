@@ -5,8 +5,10 @@ metadata:
   annotations:
     kubernetes.io/tls-acme: "true"
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    kubernetes.io/ingress.class: kong
+    konghq.com/protocols: "https"
+    konghq.com/https-redirect-status-code: "308"
 spec:
+  ingressClassName: kong
   tls:
   - secretName: docs-worker-codes
     hosts:
@@ -15,8 +17,8 @@ spec:
   - host: docs.worker.codes
     http:
       paths:
-      - pathType: Prefix
-        path: "/"
+      - path: "/"
+        pathType: ImplementationSpecific        
         backend:
           service:
             name: wrkcodes-docs-service
