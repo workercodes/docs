@@ -25,8 +25,8 @@ jobs:
 
       # Container build and push to a Azure Container registry (ACR)
       - run: |
-          docker build . -t docker.pkg.github.com/workercodes/dashboard/workercodes-docs:lastest
-          docker push docker.pkg.github.com/workercodes/dashboard/workercodes-docs:lastest
+          docker build . -t docker.pkg.github.com/workercodes/workercodes-docs:lastest
+          docker push docker.pkg.github.com/workercodes/workercodes-docs:lastest
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -65,7 +65,7 @@ jobs:
             manifests/certissuer.yml
             manifests/ingress.yml
           images: |
-            docker.pkg.github.com/workercodes/dashboard/workercodes-docs:lastest
+            docker.pkg.github.com/workercodes/workercodes-docs:lastest
           imagepullsecrets: |
             registry-connection
           namespace: ${{ env.NAMESPACE }}
