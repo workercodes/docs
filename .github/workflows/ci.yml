@@ -19,14 +19,14 @@ jobs:
       - name: Login to GitHub Package Registry
         uses: docker/login-action@v1
         with:
-          registry: https://docker.pkg.github.com
+          registry: https://ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GHCR_TOKEN }}
 
       # Container build and push to a Azure Container registry (ACR)
       - run: |
-          docker build . -t docker.pkg.github.com/workercodes/docs/workercodes-docs:lastest
-          docker push docker.pkg.github.com/workercodes/docs/workercodes-docs:lastest
+          docker build . -t ghcr.io/workercodes/docs/workercodes-docs:lastest
+          docker push ghcr.io/workercodes/docs/workercodes-docs:lastest
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -49,7 +49,7 @@ jobs:
       - name: Create imagepullsecret for GitHub Container registry
         uses: azure/k8s-create-secret@v1
         with:
-          container-registry-url: https://docker.pkg.github.com
+          container-registry-url: https://ghcr.io
           container-registry-username: ${{ github.repository_owner }}
           container-registry-password: ${{ secrets.GHCR_TOKEN }}
           secret-name: registry-connection
@@ -57,7 +57,7 @@ jobs:
 
       # Deploy app to AKS
       - name: Deploy App to Cluster
-        uses: azure/k8s-deploy@v1
+        uses: azure/k8s-deploy@v1.4
         with:
           manifests: |
             manifests/deployment.yml
@@ -65,7 +65,7 @@ jobs:
             manifests/certissuer.yml
             manifests/ingress.yml
           images: |
-            docker.pkg.github.com/workercodes/docs/workercodes-docs:lastest
+            ghcr.io/workercodes/docs/workercodes-docs:lastest
           imagepullsecrets: |
             registry-connection
           namespace: ${{ env.NAMESPACE }}
