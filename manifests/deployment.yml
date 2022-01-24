@@ -17,7 +17,7 @@ spec:
         app: wrkcodes-docs
     spec:
       containers:
-        - image: "docker.pkg.github.com/workercodes/workercodes-docs:lastest"
+        - image: "docker.pkg.github.com/workercodes/docs/workercodes-docs:lastest"
           name: wrkcodes-docs
           ports:
             - containerPort: 8080
